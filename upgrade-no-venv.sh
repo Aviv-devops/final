@@ -126,7 +126,7 @@ eval $COMMAND || exit 1
 #  echo ""
 #  echo "After modifying these files, reload the systemctl daemon:"
 #  echo "  > systemctl daemon-reload"
-ה  echo "--------------------------------------------------------------------"
+#  echo "--------------------------------------------------------------------"
 #fi
 
 echo "Upgrade complete! Don't forget to restart the Status-Page services:"
