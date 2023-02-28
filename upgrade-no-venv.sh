@@ -32,24 +32,24 @@ if [ -d "$VIRTUALENV" ]; then
   COMMAND="rm -rf ${VIRTUALENV}"
   echo "Removing old virtual environment..."
   eval $COMMAND
-else
-  WARN_MISSING_VENV=1
+#else
+  #WARN_MISSING_VENV=1
 fi
 
 # Create a new virtual environment
-COMMAND="${PYTHON} -m venv ${VIRTUALENV}"
-echo "Creating a new virtual environment at ${VIRTUALENV}..."
-eval $COMMAND || {
-  echo "--------------------------------------------------------------------"
-  echo "ERROR: Failed to create the virtual environment. Check that you have"
-  echo "the required system packages installed and the following path is"
-  echo "writable: ${VIRTUALENV}"
-  echo "--------------------------------------------------------------------"
-  exit 1
-}
+#COMMAND="${PYTHON} -m venv ${VIRTUALENV}"
+#echo "Creating a new virtual environment at ${VIRTUALENV}..."
+#eval $COMMAND || {
+#  echo "--------------------------------------------------------------------"
+#  echo "ERROR: Failed to create the virtual environment. Check that you have"
+#  echo "the required system packages installed and the following path is"
+#  echo "writable: ${VIRTUALENV}"
+#  echo "--------------------------------------------------------------------"
+#  exit 1
+#}
 
 # Activate the virtual environment
-source "${VIRTUALENV}/bin/activate"
+#source "${VIRTUALENV}/bin/activate"
 
 # Upgrade pip
 COMMAND="pip install --upgrade pip"
@@ -108,26 +108,26 @@ COMMAND="python3 statuspage/manage.py clearcache"
 echo "Clearing the cache ($COMMAND)..."
 eval $COMMAND || exit 1
 
-if [ -v WARN_MISSING_VENV ]; then
-  echo "--------------------------------------------------------------------"
-  echo "WARNING: No existing virtual environment was detected. A new one has"
-  echo "been created. Update your systemd service files to reflect the new"
-  echo "Python and gunicorn executables. (If this is a new installation,"
-  echo "this warning can be ignored.)"
-  echo ""
-  echo "status-page.service ExecStart:"
-  echo "  ${VIRTUALENV}/bin/gunicorn"
-  echo ""
-  echo "status-page-scheduler.service ExecStart:"
-  echo "  ${VIRTUALENV}/bin/python"
-  echo ""
-  echo "status-page-rq.service ExecStart:"
-  echo "  ${VIRTUALENV}/bin/python"
-  echo ""
-  echo "After modifying these files, reload the systemctl daemon:"
-  echo "  > systemctl daemon-reload"
-  echo "--------------------------------------------------------------------"
-fi
+#if [ -v WARN_MISSING_VENV ]; then
+#  echo "--------------------------------------------------------------------"
+#  echo "WARNING: No existing virtual environment was detected. A new one has"
+#  echo "been created. Update your systemd service files to reflect the new"
+#  echo "Python and gunicorn executables. (If this is a new installation,"
+#  echo "this warning can be ignored.)"
+#  echo ""
+#  echo "status-page.service ExecStart:"
+#  echo "  ${VIRTUALENV}/bin/gunicorn"
+#  echo ""
+#  echo "status-page-scheduler.service ExecStart:"
+#  echo "  ${VIRTUALENV}/bin/python"
+#  echo ""
+#  echo "status-page-rq.service ExecStart:"
+#  echo "  ${VIRTUALENV}/bin/python"
+#  echo ""
+#  echo "After modifying these files, reload the systemctl daemon:"
+#  echo "  > systemctl daemon-reload"
+ה  echo "--------------------------------------------------------------------"
+#fi
 
 echo "Upgrade complete! Don't forget to restart the Status-Page services:"
 echo "  > sudo systemctl restart status-page status-page-scheduler status-page-rq"
