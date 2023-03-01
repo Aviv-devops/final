@@ -7,12 +7,12 @@ Wants=network-online.target
 [Service]
 Type=simple
 
-User=status-page
-Group=status-page
+User=yarden
+Group=yarden
 PIDFile=/var/tmp/status-page.pid
-WorkingDirectory=/opt/status-page
+WorkingDirectory=/opt/status-page/final
 
-ExecStart=/opt/status-page/venv/bin/gunicorn --pid /var/tmp/status-page.pid --pythonpath /opt/status-page/statuspage --config /opt/status-page/gunicorn.py statuspage.wsgi
+ExecStart=/opt/status-page/final/venv/bin/gunicorn --pid /var/tmp/status-page.pid --pythonpath /opt/status-page/final/statuspage --config /opt/status-page/final/gunicorn.py statuspage.wsgi
 
 Restart=on-failure
 RestartSec=30
