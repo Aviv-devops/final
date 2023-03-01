@@ -7,11 +7,11 @@ Wants=network-online.target
 [Service]
 Type=simple
 
-User=status-page
-Group=status-page
-WorkingDirectory=/opt/status-page
+User=yarden
+Group=yarden
+WorkingDirectory=/opt/status-page/final
 
-ExecStart=/opt/status-page/venv/bin/python3 /opt/status-page/statuspage/manage.py rqworker high default low
+ExecStart=/opt/status-page/final/venv/bin/python3 /opt/status-page/final/statuspage/manage.py rqworker high default low
 
 Restart=on-failure
 RestartSec=30
