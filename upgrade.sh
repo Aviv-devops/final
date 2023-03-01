@@ -79,7 +79,7 @@ else
 fi
 
 # Apply any database migrations
-COMMAND="python3 statuspage/manage.py migrate"
+COMMAND="python3 ./statuspage/manage.py migrate"
 echo "Applying database migrations ($COMMAND)..."
 eval $COMMAND || exit 1
 
@@ -89,22 +89,22 @@ echo "Building documentation ($COMMAND)..."
 eval $COMMAND || exit 1
 
 # Collect static files
-COMMAND="python3 statuspage/manage.py collectstatic --no-input"
+COMMAND="python3 ./statuspage/manage.py collectstatic --no-input"
 echo "Collecting static files ($COMMAND)..."
 eval $COMMAND || exit 1
 
 # Delete any stale content types
-COMMAND="python3 statuspage/manage.py remove_stale_contenttypes --no-input"
+COMMAND="python3 ./statuspage/manage.py remove_stale_contenttypes --no-input"
 echo "Removing stale content types ($COMMAND)..."
 eval $COMMAND || exit 1
 
 # Delete any expired user sessions
-COMMAND="python3 statuspage/manage.py clearsessions"
+COMMAND="python3 ./statuspage/manage.py clearsessions"
 echo "Removing expired user sessions ($COMMAND)..."
 eval $COMMAND || exit 1
 
 # Clear the cache
-COMMAND="python3 statuspage/manage.py clearcache"
+COMMAND="python3 ./statuspage/manage.py clearcache"
 echo "Clearing the cache ($COMMAND)..."
 eval $COMMAND || exit 1
 
