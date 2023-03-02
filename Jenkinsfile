@@ -51,7 +51,7 @@ pipeline {
                 sh "docker pull ${curImage}"
             }
         }
-        */
+        
         
         stage("Connect and docker pull") {
             steps{
@@ -62,7 +62,7 @@ pipeline {
         }
         //sh 'ssh -T ubuntu@54.83.199.231 "docker pull ${curImage}"'
         
-        /*
+        
         stage("Create Container") {
             steps{
             sshagent(credentials:['54.83.199.231']) {
