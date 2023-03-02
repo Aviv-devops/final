@@ -33,7 +33,7 @@ pipeline {
         
         stage ('docker push'){
             steps{
-                    sh "docker tag flask_image:latest ${curImage}"
+                    sh "docker tag final_project:latest ${curImage}"
                     sh "docker push ${curImage}"
             }
         }
