@@ -56,15 +56,15 @@ pipeline {
         stage("Connect To ECR") {
             steps{
                 sshagent(credentials:['devops']) {
-                    sh 'ssh -t ubuntu@34.229.242.33 "echo heyheyhey"'
+                    //sh 'ssh -t ubuntu@34.229.242.33 "echo heyheyhey"'
                     //sh 'ssh -t -o StrictHostKeyChecking=yes ubuntu@34.229.242.33 "echo heyheyhey"'
-                    //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
+                    sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker pull ${curImage}"'
                 }
             }
         }
         
-        /*
+        
         stage("pull image") {
             steps{
                 sshagent(credentials:['devops']) {
@@ -83,7 +83,7 @@ pipeline {
             }
         }
         //sh 'ssh -T ubuntu@54.83.199.231 "docker pull ${curImage}"'
-        */
+        
         
         /*
         stage("Create Container") {
