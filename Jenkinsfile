@@ -69,7 +69,7 @@ pipeline {
             steps{
                 sshagent(credentials:['devops']) {
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
-                    sh 'ssh -T ubuntu@34.229.242.33 "docker pull ""${curImage}""'
+                    sh 'ssh -T ubuntu@34.229.242.33 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest'
                 }
             }
         }
