@@ -57,8 +57,8 @@ SITE_URL = ""
 # For optimal security, SECRET_KEY should be at least 50 characters in length and contain a mix of letters, numbers, and
 # symbols. Status-Page will not run without this defined. For more information, see
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-SECRET_KEY
-SECRET_KEY = 'z=OH8!Us44NGulr!rLu3I@0W^*g-W3jF5MK2Uy0xtwg9M%EqdJ'
-#'${{secret.SECRET_GENERATE_KEY}}'
+SECRET_KEY = "${{ secret.SECRET_GENERATE_KEY }}"
+#'' 'z=OH8!Us44NGulr!rLu3I@0W^*g-W3jF5MK2Uy0xtwg9M%EqdJ'
 
 #
 # Optional Settings
