@@ -10,7 +10,6 @@ pipeline {
         stage('Clone repository') { 
             steps{
                 checkout scm
-                sh 'pwd'
             }
         }
         
