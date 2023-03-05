@@ -55,7 +55,7 @@ pipeline {
         
         stage("Connect To ECR") {
             steps{
-                sshagent(credentials:['devops']) {
+                sshagent(credentials:['aws-credentials']) {
                     sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker pull ${curImage}"'
                 }
@@ -64,7 +64,7 @@ pipeline {
         
         stage("pull image") {
             steps{
-                sshagent(credentials:['devops']) {
+                sshagent(credentials:['aws-credentials']) {
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
                     sh 'ssh -T ubuntu@34.229.242.33 "docker pull ${curImage}"'
                 }
@@ -74,7 +74,7 @@ pipeline {
         
         stage("Docker run") {
             steps{
-                sshagent(credentials:['devops']) {
+                sshagent(credentials:['aws-credentials']) {
                     sh 'ssh -T ubuntu@34.229.242.33 "docker run -p 8000:8000 --name yarden1 -it 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                 }
             }
