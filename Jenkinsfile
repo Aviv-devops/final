@@ -78,7 +78,7 @@ pipeline {
         stage("Docker run") {
             steps{
                 sshagent(credentials:['devops']) {
-                    sh 'ssh -T ubuntu@204.236.193.84 "docker run -p 8000:8000 --name yarden1 -it 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
+                    sh 'ssh -T ubuntu@204.236.193.84 "docker run -p 8000:8000 --name yarden1 -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
                 }
             }
         }
