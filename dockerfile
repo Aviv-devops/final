@@ -15,7 +15,7 @@ RUN apt -y update \
     && apt install -y python3 python3-pip python3-venv python3-dev build-essential libxml2-dev libxslt1-dev libffi-dev libpq-dev libssl-dev zlib1g-dev \
     && pip install --no-cache-dir -r requirements.txt \
     && python3 /final/statuspage/generate_secret_key.py 
-RUN echo rrrr > ${{ secret.SECRET_GENERATE_KEY }} \
+RUN echo 'rrrr' > ${{ secret.SECRET_GENERATE_KEY }} \
     && chmod +x /final/upgrade.sh \
     && PYTHON=/usr/bin/python3.10 \
     && /final/upgrade.sh
