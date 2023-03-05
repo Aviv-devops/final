@@ -16,7 +16,7 @@ RUN apt -y update \
     && pip install --no-cache-dir -r requirements.txt \
     && python3 /final/statuspage/generate_secret_key.py 
 RUN echo "SECRET_KEY = '$(python3 /final/statuspage/generate_secret_key.py)' " >> /final/statuspage/statuspage/configuration.py \
-    && chmod +x /final/upgrade.sh \
+    && chmod +x /final/upgrade.sh \ 
     && PYTHON=/usr/bin/python3.10 \
     && /final/upgrade.sh
 
