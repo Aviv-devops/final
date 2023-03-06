@@ -26,11 +26,18 @@ pipeline {
             }
         }
         
+        stage ('docker delete :latest in ECR'){
+            steps{
+                    sh "docker rmi ${curImage}"
+            }
+        }
+        
         stage ('docker build'){
             steps{
                     sh 'docker build -t final_project .'
             }
         }
+        
         
         stage ('docker push'){
             steps{
