@@ -87,22 +87,10 @@ pipeline {
         stage("Docker run") {
             steps{
                 sshagent(credentials:['devops']) {
-                    sh 'ssh -T ubuntu@52.55.2.237 "docker run -p 8000:8000 --name yarden$BUILD_ID -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                    sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden:latest -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                     //sh 'ssh -T ubuntu@52.55.2.237 "docker run -p 8000:8000 --name yarden$BUILD_ID -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
                 }
             }
         }
-        //sh 'ssh -T ubuntu@54.83.199.231 "docker pull ${curImage}"'
-        
-        
-        /*
-        stage("Create Container") {
-            steps{
-            sshagent(credentials:['54.83.199.231']) {
-                sh "ssh -t ubuntu@54.83.199.231 'docker run -itd ${curImage}'"
-            }}
-        }
-        */
-        
     }
 }
