@@ -27,7 +27,7 @@ pipeline {
         
         stage ('docker build'){
             steps{
-                    sh 'docker build -t final_project .'
+                    sh 'docker build -t final_project:latest .'
             }
         }
         
