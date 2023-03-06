@@ -66,11 +66,12 @@ pipeline {
         }
         
         
-        stage("pull image") {
+        stage("Docker pull image") {
             steps{
                 sshagent(credentials:['devops']) {
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
-                    sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
+                    sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                    //sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
                 }
             }
         }
@@ -79,7 +80,8 @@ pipeline {
         stage("Docker run") {
             steps{
                 sshagent(credentials:['devops']) {
-                    sh 'ssh -T ubuntu@52.55.2.237 "docker run -p 8000:8000 --name yarden$BUILD_ID -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
+                    sh 'ssh -T ubuntu@52.55.2.237 "docker run -p 8000:8000 --name yarden$BUILD_ID -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                    //sh 'ssh -T ubuntu@52.55.2.237 "docker run -p 8000:8000 --name yarden$BUILD_ID -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
                 }
             }
         }
