@@ -2,7 +2,8 @@ pipeline {
     agent any
     
     environment {
-        curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:""$BUILD_ID""'
+        curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest'
+        //curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:""$BUILD_ID""'
     }
     
     stages {
