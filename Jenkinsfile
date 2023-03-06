@@ -28,7 +28,7 @@ pipeline {
         
         stage ('docker delete :latest in ECR'){
             steps{
-                    sh "docker rmi ${curImage}"
+                    sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
             }
         }
         
