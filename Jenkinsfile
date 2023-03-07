@@ -13,7 +13,7 @@ pipeline {
                 checkout scm
                 sh "echo 'here are the files'"
                 script{
-                    if ('update.sh') {
+                    if ('asdsdas.sh') {
                         echo 'update.sh is here'
                     } else {
                         sh "echo 'update.sh is NOT here'"
