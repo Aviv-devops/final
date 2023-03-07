@@ -40,7 +40,7 @@ pipeline {
         stage ('docker delete :latest in ECR'){
             steps{
                 script{
-                    if (env.ENV_OF_RUN == 'test') {
+                    if (env.ENV_OF_RUN == 'production') {
                         sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=testing --region=us-east-1"
                     } else {
                         sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
@@ -53,7 +53,7 @@ pipeline {
         stage ('docker build'){
             steps{
                 script{
-                    if (env.ENV_OF_RUN == 'test') {
+                    if (env.ENV_OF_RUN == 'production') {
                         sh 'docker build -t final_project:testing .'
                     } else {
                         sh 'docker build -t final_project:latest .'
@@ -67,7 +67,7 @@ pipeline {
         stage ('docker push'){
             steps{
                 script{
-                    if (env.ENV_OF_RUN == 'test') {
+                    if (env.ENV_OF_RUN == 'production') {
                         sh "docker tag final_project:testing ${curImage}"
                         sh "docker push ${curImage}"
                     } else {
@@ -82,7 +82,7 @@ pipeline {
         stage ('docker rm image from local'){
             steps{
                 script{
-                    if (env.ENV_OF_RUN == 'test') {
+                    if (env.ENV_OF_RUN == 'production') {
                         sh "docker image rm ${curImage}:testing"
                     } else {
                         sh "docker image rm ${curImage}:latest"
@@ -111,7 +111,7 @@ pipeline {
                 sshagent(credentials:['devops']) {
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
                     script{
-                        if (env.ENV_OF_RUN == 'test') {
+                        if (env.ENV_OF_RUN == 'production') {
                             sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
                         } else {
                             sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
@@ -131,7 +131,7 @@ pipeline {
                 sshagent(credentials:['devops']) {
                     
                     script{
-                        if (env.ENV_OF_RUN == 'test') {
+                        if (env.ENV_OF_RUN == 'production') {
                             sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
                         } else {
                             sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
