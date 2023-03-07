@@ -11,8 +11,13 @@ pipeline {
         stage('Clone repository') { 
             steps{
                 checkout scm
-                sh "echo 'Hello from test branch!'"
+                sh "echo 'here are the files'"
                 script{
+                    if ('update.sh') {
+                        echo 'update.sh is here'
+                    } else {
+                        sh "echo 'update.sh is NOT here'"
+                    }
                     if (env.ENV_OF_RUN == 'test') {
                         echo 'this is testing env'
                     } else {
