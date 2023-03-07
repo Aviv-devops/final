@@ -3,7 +3,6 @@ pipeline {
     
     environment {
         curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project'
-        //curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:""$BUILD_ID""'
     }
     
     stages {
@@ -15,11 +14,11 @@ pipeline {
                     if (env.ENV_OF_RUN == 'production') {
                         echo 'this is testing env'
                         sh "mv ./statuspage/statuspage/configuration-test.py ./statuspage/statuspage/configuration.py"
-                        sh "cat ./statuspage/statuspage/configuration.py"
+                        //sh "cat ./statuspage/statuspage/configuration.py"
                     } else {
                         sh "echo 'Hello from production branch!'"
                         sh "mv ./statuspage/statuspage/configuration-production.py ./statuspage/statuspage/configuration.py"
-                        sh "cat ./statuspage/statuspage/configuration.py"
+                        //sh "cat ./statuspage/statuspage/configuration.py"
                     }
                 }
             }
@@ -46,7 +45,6 @@ pipeline {
                         sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
                     }
                 }
-                    //sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
             }
         }
         
@@ -87,7 +85,6 @@ pipeline {
                     } else {
                         sh "docker image rm ${curImage}:latest"
                     }
-                    //sh "docker image rm ${curImage}"
                 }
             }
         }
@@ -97,10 +94,7 @@ pipeline {
         stage("Connect To ECR") {
             steps{
                 sshagent(credentials:['devops']) {
-                    //sh 'ssh -t ubuntu@34.229.242.33 "echo heyheyhey"'
-                    //sh 'ssh -t -o StrictHostKeyChecking=no ubuntu@34.229.242.33 "echo heyheyhey"'
-                    sh 'ssh -T -o StrictHostKeyChecking=no ubuntu@54.224.17.217 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
-                    //sh 'ssh -T ubuntu@34.229.242.33 "docker pull ${curImage}"'
+                    sh 'ssh -T -o StrictHostKeyChecking=no ubuntu@54.83.189.131 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
                 }
             }
         }
@@ -109,18 +103,13 @@ pipeline {
         stage("Docker pull image") {
             steps{
                 sshagent(credentials:['devops']) {
-                    //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
                     script{
                         if (env.ENV_OF_RUN == 'production') {
-                            sh 'ssh -T ubuntu@54.224.17.217 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
+                            sh 'ssh -T ubuntu@54.83.189.131 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
                         } else {
-                            sh 'ssh -T ubuntu@54.224.17.217 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                            sh 'ssh -T ubuntu@54.83.189.131 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                         }
-                    //sh "docker image rm ${curImage}"
                     }
-                    
-                    
-                    //sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                 }
             }
         }
@@ -129,18 +118,15 @@ pipeline {
         stage("Docker run") {
             steps{
                 sshagent(credentials:['devops']) {
-                    
                     script{
                         if (env.ENV_OF_RUN == 'production') {
-                            sh 'ssh -T ubuntu@54.224.17.217 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
+                            sh 'ssh -T ubuntu@54.83.189.131 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
                         } else {
-                            sh 'ssh -T ubuntu@54.224.17.217 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                            sh 'ssh -T ubuntu@54.83.189.131 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                         }
-                    //sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                    }
                 }
             }
         }
-        }
-        
     }
 }
