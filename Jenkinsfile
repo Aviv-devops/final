@@ -12,7 +12,7 @@ pipeline {
             steps{
                 checkout scm
                 sh 'll'
-                if (env.ENV_OF_RUN == 'test') {
+                if (${env.ENV_OF_RUN} == 'test') {
                     echo 'this is testing env'
                 } else {
                     sh "echo 'Hello from production branch!'"
