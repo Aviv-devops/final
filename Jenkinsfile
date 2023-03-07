@@ -13,7 +13,7 @@ pipeline {
             steps{
                 checkout scm
                 sh 'll'
-                if (${test}) {
+                if ("${test}") {
                     echo 'this is testing env'
                 } else {
                     sh "echo 'Hello from production branch!'"
