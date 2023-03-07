@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest'
+        curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project'
         //curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:""$BUILD_ID""'
     }
     
@@ -11,9 +11,8 @@ pipeline {
         stage('Clone repository') { 
             steps{
                 checkout scm
-                sh "echo 'here are the files'"
                 script{
-                    if (env.ENV_OF_RUN == 'aaa') {
+                    if (env.ENV_OF_RUN == 'test') {
                         echo 'this is testing env'
                         sh "mv ./statuspage/statuspage/configuration-test.py ./statuspage/statuspage/configuration.py"
                         sh "cat ./statuspage/statuspage/configuration.py"
@@ -26,7 +25,7 @@ pipeline {
             }
         }
         
-        /*
+        
         stage('connect to docker') {
             steps{
                 
@@ -40,27 +39,56 @@ pipeline {
         
         stage ('docker delete :latest in ECR'){
             steps{
-                    sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
+                script{
+                    if (env.ENV_OF_RUN == 'test') {
+                        sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=testing --region=us-east-1"
+                    } else {
+                        sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
+                    }
+                }
+                    //sh "aws ecr batch-delete-image --repository-name final_project --image-ids imageTag=latest --region=us-east-1"
             }
         }
         
         stage ('docker build'){
             steps{
-                    sh 'docker build -t final_project .'
+                script{
+                    if (env.ENV_OF_RUN == 'test') {
+                        sh 'docker build -t final_project:testing .'
+                    } else {
+                        sh 'docker build -t final_project:latest .'
+                    }
+                    //sh 'docker build -t final_project .'
+                }
             }
         }
         
         
         stage ('docker push'){
             steps{
-                    sh "docker tag final_project:latest ${curImage}"
-                    sh "docker push ${curImage}"
+                script{
+                    if (env.ENV_OF_RUN == 'test') {
+                        sh "docker tag final_project:testing ${curImage}"
+                        sh "docker push ${curImage}"
+                    } else {
+                        sh "docker tag final_project:latest ${curImage}"
+                        sh "docker push ${curImage}"
+                    }
+                }
+                    
             }
         }
         
         stage ('docker rm image from local'){
             steps{
-                    sh "docker image rm ${curImage}"
+                script{
+                    if (env.ENV_OF_RUN == 'test') {
+                        sh "docker image rm ${curImage}:testing"
+                    } else {
+                        sh "docker image rm ${curImage}:latest"
+                    }
+                    //sh "docker image rm ${curImage}"
+                }
             }
         }
         
@@ -82,8 +110,17 @@ pipeline {
             steps{
                 sshagent(credentials:['devops']) {
                     //sh 'ssh -T ubuntu@34.229.242.33 "docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 808447716657.dkr.ecr.us-east-1.amazonaws.com"'
-                    sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
-                    //sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
+                    script{
+                        if (env.ENV_OF_RUN == 'test') {
+                            sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
+                        } else {
+                            sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                        }
+                    //sh "docker image rm ${curImage}"
+                    }
+                    
+                    
+                    //sh 'ssh -T ubuntu@52.55.2.237 "docker pull 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                 }
             }
         }
@@ -92,11 +129,17 @@ pipeline {
         stage("Docker run") {
             steps{
                 sshagent(credentials:['devops']) {
-                    sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
-                    //sh 'ssh -T ubuntu@52.55.2.237 "docker run -p 8000:8000 --name yarden$BUILD_ID -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:$BUILD_ID"'
+                    
+                    script{
+                        if (env.ENV_OF_RUN == 'test') {
+                            sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:testing"'
+                        } else {
+                            sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
+                        }
+                    //sh 'ssh -T ubuntu@52.55.2.237 "docker run --restart=always -p 8000:8000 --name yarden-ve-aviv -td 808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest"'
                 }
             }
         }
-        */
+        
     }
 }
