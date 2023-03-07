@@ -11,7 +11,7 @@ pipeline {
         stage('Clone repository') { 
             steps{
                 checkout scm
-                sh 'll'
+                sh "echo 'Hello from test branch!'"
                 script{
                     if (env.ENV_OF_RUN == 'test') {
                         echo 'this is testing env'
