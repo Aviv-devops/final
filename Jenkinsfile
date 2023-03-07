@@ -12,7 +12,7 @@ pipeline {
             steps{
                 checkout scm
                 script{
-                    if (env.ENV_OF_RUN == 'test') {
+                    if (env.ENV_OF_RUN == 'production') {
                         echo 'this is testing env'
                         sh "mv ./statuspage/statuspage/configuration-test.py ./statuspage/statuspage/configuration.py"
                         sh "cat ./statuspage/statuspage/configuration.py"
