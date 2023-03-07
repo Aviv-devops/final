@@ -4,6 +4,7 @@ pipeline {
     environment {
         curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest'
         //curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:""$BUILD_ID""'
+        is-env-test = 'True'
     }
     
     stages {
@@ -11,10 +12,16 @@ pipeline {
         stage('Clone repository') { 
             steps{
                 checkout scm
+                sh 'll'
+                if (${is-env-test}) {
+                    echo 'this is testing env'
+                } else {
+                    sh "echo 'Hello from production branch!'"
+                }
             }
         }
         
-        
+        /*
         stage('connect to docker') {
             steps{
                 
@@ -52,14 +59,7 @@ pipeline {
             }
         }
         
-        /*
-        //from inside the instance
-        stage('docker pull'){
-            steps{
-                sh "docker pull ${curImage}"
-            }
-        }
-        */
+       
         
         stage("Connect To ECR") {
             steps{
@@ -92,5 +92,6 @@ pipeline {
                 }
             }
         }
+        */
     }
 }
