@@ -13,13 +13,10 @@ pipeline {
                 checkout scm
                 sh "echo 'here are the files'"
                 script{
-                    if ('asdsdas.sh') {
-                        echo 'update.sh is here'
-                    } else {
-                        sh "echo 'update.sh is NOT here'"
-                    }
                     if (env.ENV_OF_RUN == 'test') {
                         echo 'this is testing env'
+                        sh "mv ./statuspage/statuspage/configuration-test.py ./statuspage/statuspage/configuration.py"
+                        sh "cat ./statuspage/statuspage/configuration.py"
                     } else {
                         sh "echo 'Hello from production branch!'"
                     }
