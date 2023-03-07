@@ -4,7 +4,6 @@ pipeline {
     environment {
         curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:latest'
         //curImage = '808447716657.dkr.ecr.us-east-1.amazonaws.com/final_project:""$BUILD_ID""'
-        test = 'True'
     }
     
     stages {
@@ -13,7 +12,7 @@ pipeline {
             steps{
                 checkout scm
                 sh 'll'
-                if ("${test}") {
+                if (env.ENV_OF_RUN == 'test') {
                     echo 'this is testing env'
                 } else {
                     sh "echo 'Hello from production branch!'"
