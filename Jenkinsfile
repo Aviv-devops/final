@@ -13,12 +13,14 @@ pipeline {
                 checkout scm
                 sh "echo 'here are the files'"
                 script{
-                    if (env.ENV_OF_RUN == 'test') {
+                    if (env.ENV_OF_RUN == 'aaa') {
                         echo 'this is testing env'
                         sh "mv ./statuspage/statuspage/configuration-test.py ./statuspage/statuspage/configuration.py"
                         sh "cat ./statuspage/statuspage/configuration.py"
                     } else {
                         sh "echo 'Hello from production branch!'"
+                        sh "mv ./statuspage/statuspage/configuration-production.py ./statuspage/statuspage/configuration.py"
+                        sh "cat ./statuspage/statuspage/configuration.py"
                     }
                 }
             }
